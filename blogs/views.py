@@ -31,11 +31,24 @@ def blogs(request, slug):
     return render(request, 'blogs.html', context)
 
 def search(request):
+    # get the keyword from query parameters; this may be None if the form
+    # hasn't been submitted yet.
     keyword = request.GET.get('keyword')
-    blogs= Blog.objects.filter(Q(title__icontains=keyword) | Q(short_description__icontains=keyword) | Q(blog_body__icontains=keyword), status='Published')
+    blogs = []
+
+    if keyword:
+        blogs = Blog.objects.filter(
+            Q(title__icontains=keyword)
+            | Q(short_description__icontains=keyword)
+            | Q(blog_body__icontains=keyword),
+            status='Published',
+        )
+
     context = {
-        'blogs':blogs,
-        'keyword':keyword,
+        'blogs': blogs,
+        # use the same name as the input in base.html so the value can be
+        # echoed back correctly
+        'keyword': keyword,
     }
-  
+
     return render(request, 'search.html', context)

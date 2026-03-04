@@ -26,8 +26,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('category/', include('blogs.urls')),
-    path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
+    # make sure the search URL is checked before the slug pattern
     path('blogs/search/', BlogsView.search, name='search'),
+    path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
